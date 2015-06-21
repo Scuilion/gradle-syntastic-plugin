@@ -1,0 +1,25 @@
+apply plugin: 'maven'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'com.scuilion.gradle', name: 'utils', version: System.properties['version']
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+apply plugin: 'groovy'
+
+dependencies {
+    compile localGroovy()
+    compile 'com.google.guava:guava:17.0'//just for syntastic file
+}
+
+apply plugin: 'utils'
