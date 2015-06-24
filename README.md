@@ -3,6 +3,7 @@
 A gradle plugin for creating the .syntastic_javac_config file used by syntastic in VIM.
 
 ##### Using the Plugin
+```
 buildscript {
   repositories {
     maven {
