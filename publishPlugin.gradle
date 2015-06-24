@@ -1,0 +1,18 @@
+pluginBundle {
+    website = 'scuilion.wordpress.com'
+    vcsUrl = syntasticVcsUrl
+    tags = artifactTags.tokenize(' ') 
+    plugins {
+        syntasticPlugin {
+            vcsUrl = syntasticVcsUrl
+            id = group
+            displayName = 'Syntastic'
+            description = pluginDescription
+        }
+    }
+    mavenCoordinates {
+        groupId = 'com.scuilion.syntastic'
+        artifactId = artifactId
+        version = version
+    }
+}

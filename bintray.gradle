@@ -1,15 +1,20 @@
 bintray {
     user = bintrayUser
     key = bintrayKey
-    publications = ['mavenStuff']
+    publications = ['maven']
 
     dryRun = false //Whether to run this as dry-run, without deploying
     publish = false //If version should be auto published after an upload
     pkg {
+        desc = pluginDescription
         repo = 'maven'
-        name = 'gradle-syntastic-plugin'
+        name = artifactId
         licenses = ['MIT']
-        labels = ['gradle', 'utilities']
+        labels = artifactTags.tokenize(' ') 
+        vcsUrl = syntasticVcsUrl
+        version {
+            name = project.version
+        }
     }
 
 }
