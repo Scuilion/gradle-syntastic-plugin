@@ -2,11 +2,12 @@ apply plugin: 'maven'
 
 buildscript {
     repositories {
-        mavenLocal()
-        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath group: 'com.scuilion.gradle', name: 'utils', version: System.properties['version']
+        classpath "com.scuilion.syntastic:gradle-syntastic-plugin:0.3.2"
     }
 }
 
@@ -22,4 +23,4 @@ dependencies {
     compile 'com.google.guava:guava:17.0'//just for syntastic file
 }
 
-apply plugin: 'utils'
+apply plugin: "com.scuilion.syntastic"
