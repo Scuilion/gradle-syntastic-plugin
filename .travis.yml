@@ -1,0 +1,12 @@
+language: groovy
+before_install:
+ - chmod +x gradlew
+script: ./gradlew clean build integrationTest
+notifications:
+  email: false
+branches:
+  only:
+    - master
+env:
+  global:
+  - TERM=dumb
