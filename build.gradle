@@ -49,7 +49,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId group
-            artifactId artifactId 
+            artifactId artifactId
             version version
             from components.java
             artifact sourceJar
@@ -98,5 +98,9 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.4'
 }
 apply from: 'bintray.gradle'
+
+integrationTest {
+  testLogging.showStandardStreams = true
+}
 
 //apply plugin: 'syntastic-plugin'

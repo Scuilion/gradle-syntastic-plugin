@@ -1,5 +1,7 @@
 package com.scuilion.gradle.plugins.syntastic
 
+import java.io.ByteArrayOutputStream;
+
 import org.junit.Test
 import org.junit.BeforeClass
 import static org.junit.Assume.assumeTrue
@@ -19,11 +21,21 @@ class SyntasticTest {
     static void checkGeneate() {
         def connection =
             GradleConnector.newConnector().forProjectDirectory(INTEGRATION_BUILD_LOCATION).connect()
+        def output = new ByteArrayOutputStream()
+        def error = new ByteArrayOutputStream()
         try {
             def build = connection.newBuild()
+            build.setStandardOutput(output)
+            build.setStandardError(error)
             build.forTasks('createSyntastic')
             build.run()
         } catch (Exception e) {
+            def x = 'x'*30
+            println x + ' Standard Output ' + x
+            println output
+            println x + ' Standard Error  ' + x
+            println error
+            println x + ' Standard End    ' + x
             throw new GradleConnectionException("Build execution failed.", e)
         } finally {
             connection.close()
