@@ -1,7 +1,5 @@
 package com.scuilion.gradle.plugins.syntastic
 
-import java.io.ByteArrayOutputStream;
-
 import org.junit.Test
 import org.junit.BeforeClass
 import static org.junit.Assume.assumeTrue
@@ -30,7 +28,7 @@ class SyntasticTest {
             build.forTasks('createSyntastic')
             build.run()
         } catch (Exception e) {
-            def x = 'x'*30
+            def x = 'x' * 30
             println x + ' Standard Output ' + x
             println output
             println x + ' Standard Error  ' + x
