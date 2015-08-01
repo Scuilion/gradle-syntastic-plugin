@@ -7,7 +7,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.scuilion.syntastic:gradle-syntastic-plugin:0.3.2"
+        classpath "com.scuilion.syntastic:gradle-syntastic-plugin:0.3.3"
     }
 }
 
