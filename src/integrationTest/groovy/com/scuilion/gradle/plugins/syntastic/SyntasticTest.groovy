@@ -25,7 +25,7 @@ class SyntasticTest {
             def build = connection.newBuild()
             build.setStandardOutput(output)
             build.setStandardError(error)
-            build.forTasks('createSyntastic')
+            build.forTasks('syntastic')
             build.run()
         } catch (Exception e) {
             def x = 'x' * 30
