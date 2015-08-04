@@ -74,8 +74,8 @@ class SyntasticTest {
     private void hasGuavaFile() {
         listOfFiles.each {
             if (it.contains('guava')) {
-                assert new File(it).exists() 
-                assert new File(it).isFile() 
+                assert new File(it).exists()
+                assert new File(it).isFile()
             }
         }
     }
