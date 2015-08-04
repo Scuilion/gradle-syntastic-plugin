@@ -22,7 +22,7 @@ class Syntastic extends DefaultTask {
     }
 
     @OutputFile
-    File output = new File('.syntastic_javac_config')
+    File output = project.file('.syntastic_javac_config')
 
     String getValue() {
         classpath.files.join File.pathSeparator

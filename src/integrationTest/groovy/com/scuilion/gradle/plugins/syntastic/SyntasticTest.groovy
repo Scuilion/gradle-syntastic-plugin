@@ -14,6 +14,7 @@ class SyntasticTest {
     private static final File INTEGRATION_BUILD_LOCATION =
         new File(System.getProperty('integrationTest.location'), 'syntasticTest')
     private static final File SYNTASTIC_CONFIG = new File(INTEGRATION_BUILD_LOCATION, ".syntastic_javac_config")
+    private static listOfFiles
 
     @BeforeClass
     static void checkGeneate() {
@@ -27,6 +28,7 @@ class SyntasticTest {
             build.setStandardError(error)
             build.forTasks('syntastic')
             build.run()
+            listOfFiles = matcher[0][1].tokenize(File.pathSeparator)
         } catch (Exception e) {
             def x = 'x' * 30
             println x + ' Standard Output ' + x
@@ -49,11 +51,8 @@ class SyntasticTest {
     @Test
     void nixSpecificCheck() {
         assumeFalse(SystemUtils.IS_OS_WINDOWS)
-        assert new File(listOfFiles[0]).exists()
-        assert new File(listOfFiles[0]).isFile()
-        assert new File(listOfFiles[1]).exists() //because C: is a file
-        assert new File(listOfFiles[1]).isFile() //because C: is a file
-
+        assert !listOfFiles.empty
+        hasGuavaFile()
         assert !SYNTASTIC_CONFIG.text.contains("\\")
         assert !SYNTASTIC_CONFIG.text.contains(';')
     }
@@ -61,10 +60,8 @@ class SyntasticTest {
     @Test
     void windowsSpecificCheck() {
         assumeTrue(SystemUtils.IS_OS_WINDOWS)
-        assert new File(listOfFiles[0]).exists()
-        assert new File(listOfFiles[0]).isFile()
-        assert new File(listOfFiles[1]).exists() //because C: is a file
-        assert new File(listOfFiles[1]).isFile() //because C: is a file
+        assert !listOfFiles.empty
+        hasGuavaFile()
         assert !SYNTASTIC_CONFIG.text.contains('/')
         assert SYNTASTIC_CONFIG.text.contains(';')
     }
@@ -74,11 +71,16 @@ class SyntasticTest {
         assert matcher.find() == true
     }
 
-    private getListOfFiles() {
-        return matcher[0][1].tokenize(File.pathSeparator)
+    private void hasGuavaFile() {
+        listOfFiles.each {
+            if (it.contains('guava')) {
+                assert new File(it).exists() 
+                assert new File(it).isFile() 
+            }
+        }
     }
 
-    private getMatcher() {
+    private static getMatcher() {
         return SYNTASTIC_CONFIG.text =~ /"([^"]*)"/
     }
 }
