@@ -2,17 +2,15 @@ package com.scuilion.gradle.plugins.syntastic
 
 import spock.lang.*
 
-import org.junit.rules.TemporaryFolder;
-import org.junit.Rule;
-import org.gradle.tooling.GradleConnectionException
-import org.gradle.testkit.runner.GradleRunner;
-import org.gradle.tooling.GradleConnector
+import org.junit.rules.TemporaryFolder
+import org.junit.Rule
+import org.gradle.testkit.runner.GradleRunner
 import org.apache.commons.lang3.SystemUtils
 
 class SyntasticSpec extends Specification {
 
     @Rule
-    def TemporaryFolder testProjectDir = new TemporaryFolder();
+    TemporaryFolder testProjectDir = new TemporaryFolder()
 
     def listOfFiles
 
@@ -22,7 +20,7 @@ class SyntasticSpec extends Specification {
 
     def setup() {
 
-        buildFile = testProjectDir.newFile("build.gradle");
+        buildFile = testProjectDir.newFile("build.gradle")
 
         def pluginClasspathResource = getClass().classLoader.findResource("plugin-classpath.txt")
         if (pluginClasspathResource == null) {
@@ -64,7 +62,7 @@ class SyntasticSpec extends Specification {
             syntasticFile.isFile()
     }
 
-    @Requires({!SystemUtils.IS_OS_WINDOWS})
+    @Requires({ !SystemUtils.IS_OS_WINDOWS })
     def "the file has the correct includes, *nix version"() {
         expect:
             !listOfFiles.empty
@@ -73,7 +71,7 @@ class SyntasticSpec extends Specification {
             !syntasticFile.text.contains(';')
     }
 
-    @Requires({SystemUtils.IS_OS_WINDOWS})
+    @Requires({ SystemUtils.IS_OS_WINDOWS })
     def "the file has the correct includes, windows version"() {
         expect:
             !listOfFiles.empty

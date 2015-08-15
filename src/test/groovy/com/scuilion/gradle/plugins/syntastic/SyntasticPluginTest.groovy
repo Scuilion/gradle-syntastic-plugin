@@ -5,8 +5,6 @@ import spock.lang.*
 import org.apache.commons.lang3.SystemUtils
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
-import org.junit.Before
-import org.junit.Test
 
 class SyntasticPluginTest extends Specification {
 
@@ -59,7 +57,7 @@ class SyntasticPluginTest extends Specification {
             !task.classpath.files.empty
     }
 
-    @Requires({SystemUtils.IS_OS_WINDOWS})
+    @Requires({ SystemUtils.IS_OS_WINDOWS })
     def "check for the resolver on windows system"() {
         given:
             project.pluginManager.apply 'com.scuilion.syntastic'
@@ -75,7 +73,7 @@ class SyntasticPluginTest extends Specification {
             !task.value.contains(';')
     }
 
-    @Requires({!SystemUtils.IS_OS_WINDOWS})
+    @Requires({ !SystemUtils.IS_OS_WINDOWS })
     def "check for the resolver on linux system"() {
         given:
             project.pluginManager.apply 'com.scuilion.syntastic'
@@ -91,7 +89,7 @@ class SyntasticPluginTest extends Specification {
             !task.value.contains(';')
     }
 
-    @Requires({SystemUtils.IS_OS_WINDOWS})
+    @Requires({ SystemUtils.IS_OS_WINDOWS })
     def "check several paths on windows"() {
         given:
             project.pluginManager.apply 'com.scuilion.syntastic'
@@ -107,7 +105,7 @@ class SyntasticPluginTest extends Specification {
             task.value.chars.findAll { "$it" == ";" }.size == 2
     }
 
-    @Requires({!SystemUtils.IS_OS_WINDOWS})
+    @Requires({ !SystemUtils.IS_OS_WINDOWS })
     def "check several paths on nix"() {
         given:
             project.pluginManager.apply 'com.scuilion.syntastic'
@@ -124,7 +122,7 @@ class SyntasticPluginTest extends Specification {
             task.value.chars.findAll { "$it" == ":" }.size == 2
     }
 
-    @Requires({SystemUtils.IS_OS_WINDOWS})
+    @Requires({ SystemUtils.IS_OS_WINDOWS })
     def "check that duplicate paths were removed on windows systems"() {
         given:
             project.pluginManager.apply 'com.scuilion.syntastic'
@@ -140,7 +138,7 @@ class SyntasticPluginTest extends Specification {
             task.value.chars.findAll { "$it" == ";" }.size == 2
     }
 
-    @Requires({!SystemUtils.IS_OS_WINDOWS})
+    @Requires({ !SystemUtils.IS_OS_WINDOWS })
     def "check that duplicate paths were removed on nix systems"() {
         given:
             project.pluginManager.apply 'com.scuilion.syntastic'
