@@ -22,8 +22,8 @@ apply plugin: 'groovy'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
-apply from: 'check.gradle'
-apply from: 'publishPlugin.gradle'
+apply from: 'scripts/check.gradle'
+apply from: 'scripts/publishPlugin.gradle'
 
 repositories {
     mavenCentral()
@@ -112,7 +112,7 @@ task integrationTest(type:Test){
 task wrapper(type: Wrapper) {
     gradleVersion = '2.6'
 }
-apply from: 'bintray.gradle'
+apply from: 'scripts/bintray.gradle'
 
 integrationTest {
   testLogging.showStandardStreams = true
