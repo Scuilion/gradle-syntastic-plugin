@@ -1,0 +1,59 @@
+task createClasspathManifest {
+    def outputDir = file("$buildDir/$name")
+
+    inputs.files sourceSets.main.runtimeClasspath
+    outputs.dir outputDir
+
+    doLast {
+        outputDir.mkdirs()
+        file("$outputDir/plugin-classpath.txt").text = sourceSets.main.runtimeClasspath.join("\n")
+    }
+}
+
+configurations {
+    functionalTestCompile.extendsFrom testCompile
+    functionalTestRuntime.extendsFrom testRuntime
+
+    functionalTestCompile.extendsFrom compile
+    functionalTestRuntime.extendsFrom runtime
+}
+
+dependencies {
+    testCompile gradleTestKit()
+
+    testRuntime files(createClasspathManifest)
+}
+
+sourceSets {
+    functionalTest {
+        groovy {
+            srcDir 'src/functionalTest/groovy'
+        }
+        resources {
+            srcDir 'src/functionalTest/resources'
+        }
+        compileClasspath = sourceSets.main.output + configurations.testRuntime
+        runtimeClasspath = output + sourceSets.main.output + configurations.testRuntime
+    }
+}
+
+
+
+
+task functionalTest(type:Test){
+    description = 'Runs the functional tests.'
+    group = 'verification'
+
+    testClassesDir = sourceSets.functionalTest.output.classesDir
+    classpath = sourceSets.functionalTest.runtimeClasspath + sourceSets.main.output
+
+    getReports().getHtml().setDestination(new File("$project.reporting.baseDir", 'functionalTest'))
+    getReports().getJunitXml().setDestination(new File("$project.buildDir", 'functional-results'))
+    dependsOn test
+    mustRunAfter test
+}
+
+functionalTest {
+    testLogging.showStandardStreams = true
+}
+

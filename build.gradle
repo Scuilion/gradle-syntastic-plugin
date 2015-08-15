@@ -22,22 +22,12 @@ apply plugin: 'groovy'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
-apply from: 'scripts/check.gradle'
-apply from: 'scripts/publishPlugin.gradle'
+apply from: 'gradle/check.gradle'
+apply from: 'gradle/publish-plugin.gradle'
+apply from: 'gradle/functional-tests.gradle'
 
 repositories {
     mavenCentral()
-}
-task createClasspathManifest {
-    def outputDir = file("$buildDir/$name")
-
-    inputs.files sourceSets.main.runtimeClasspath
-    outputs.dir outputDir
-
-    doLast {
-        outputDir.mkdirs()
-        file("$outputDir/plugin-classpath.txt").text = sourceSets.main.runtimeClasspath.join("\n")
-    }
 }
 
 
@@ -45,10 +35,8 @@ dependencies {
     compile localGroovy()
     compile 'org.apache.commons:commons-lang3:3.4'
 
-    testRuntime files(createClasspathManifest)
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.3'
     testCompile 'junit:junit:4.12'
-    testCompile gradleTestKit()
 }
 
 task sourceJar(type: Jar, dependsOn:classes) {
@@ -72,50 +60,10 @@ publishing {
     }
 }
 
-configurations {
-    integrationTestCompile.extendsFrom testCompile
-    integrationTestRuntime.extendsFrom testRuntime
-
-    integrationTestCompile.extendsFrom compile
-    integrationTestRuntime.extendsFrom runtime
-}
-
-sourceSets {
-    integrationTest {
-        java {
-            srcDir 'src/integrationTest/groovy'
-        }
-        resources {
-            srcDir 'src/integrationTest/resources'
-        }
-        compileClasspath = sourceSets.main.output + configurations.testRuntime
-        runtimeClasspath = output + sourceSets.main.output + configurations.testRuntime
-    }
-}
-
-task integrationTest(type:Test){
-    dependsOn publishToMavenLocal
-    dependsOn integrationTestClasses
-
-    systemProperties['integrationTest.location'] = new File(sourceSets.integrationTest.output.resourcesDir, 'pluginTest').absolutePath
-    systemProperties['version'] = version
-
-    testClassesDir = sourceSets.integrationTest.output.classesDir
-    classpath = sourceSets.integrationTest.runtimeClasspath + sourceSets.main.output
-
-    getReports().getHtml().setDestination(new File("$project.reporting.baseDir", 'integrationTest'))
-    getReports().getJunitXml().setDestination(new File("$project.buildDir", 'integration-results'))
-    dependsOn publishToMavenLocal
-    mustRunAfter test
-}
-
 task wrapper(type: Wrapper) {
     gradleVersion = '2.6'
 }
-apply from: 'scripts/bintray.gradle'
 
-integrationTest {
-  testLogging.showStandardStreams = true
-}
+apply from: 'gradle/bintray.gradle'
 
 //apply plugin: 'syntastic-plugin'
