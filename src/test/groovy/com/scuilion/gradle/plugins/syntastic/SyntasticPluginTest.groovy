@@ -1,7 +1,6 @@
 package com.scuilion.gradle.plugins.syntastic
 
-import static org.junit.Assume.assumeFalse
-import static org.junit.Assume.assumeTrue
+import spock.lang.*
 
 import org.apache.commons.lang3.SystemUtils
 import org.gradle.api.Project
@@ -9,12 +8,11 @@ import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Before
 import org.junit.Test
 
-class SyntasticPluginTest {
+class SyntasticPluginTest extends Specification {
 
     private Project project
 
-    @Before
-    void setupProject() {
+    def setup() {
         project = ProjectBuilder.builder().build()
     }
 
@@ -26,109 +24,136 @@ class SyntasticPluginTest {
         task
     }
 
-    @Test
-    void nothingToDo() {
-        project.pluginManager.apply 'com.scuilion.syntastic'
+    def "there is nothing to do"() {
+        given:
+            project.pluginManager.apply 'com.scuilion.syntastic'
 
-        def task = extractTask()
-        assert task.classpath.files.empty
+        when:
+            def task = extractTask()
+
+        then:
+            task.classpath.files.empty
     }
 
-    @Test
-    void javaProject() {
-        project.pluginManager.apply 'java'
-        project.pluginManager.apply 'com.scuilion.syntastic'
+    def "it works on a java project"() {
+        given:
+            project.pluginManager.apply 'java'
+            project.pluginManager.apply 'com.scuilion.syntastic'
 
-        def task = extractTask()
-        assert !task.classpath.files.empty
+        when:
+            def task = extractTask()
+
+        then:
+            !task.classpath.files.empty
     }
 
-    @Test
-    void groovyProject() {
-        project.pluginManager.apply 'groovy'
-        project.pluginManager.apply 'com.scuilion.syntastic'
+    def "it works on a groovy project"() {
+        given:
+            project.pluginManager.apply 'groovy'
+            project.pluginManager.apply 'com.scuilion.syntastic'
 
-        def task = extractTask()
-        assert !task.classpath.files.empty
+        when:
+            def task = extractTask()
+
+        then:
+            !task.classpath.files.empty
     }
 
-    @Test
-    void windowsSinglePath() {
-        assumeTrue SystemUtils.IS_OS_WINDOWS
-        project.pluginManager.apply 'com.scuilion.syntastic'
+    @Requires({SystemUtils.IS_OS_WINDOWS})
+    def "check for the resolver on windows system"() {
+        given:
+            project.pluginManager.apply 'com.scuilion.syntastic'
 
-        def task = project.tasks.syntastic
-        task.resolver {
-            project.files('a')
-        }
-        assert !task.value.contains('/')
-        assert !task.value.contains(';')
+        when:
+            def task = project.tasks.syntastic
+            task.resolver {
+                project.files('a')
+            }
+
+        then:
+            !task.value.contains('/')
+            !task.value.contains(';')
     }
 
-    @Test
-    void nixSinglePath() {
-        assumeFalse SystemUtils.IS_OS_WINDOWS
-        project.pluginManager.apply 'com.scuilion.syntastic'
+    @Requires({!SystemUtils.IS_OS_WINDOWS})
+    def "check for the resolver on linux system"() {
+        given:
+            project.pluginManager.apply 'com.scuilion.syntastic'
 
-        def task = project.tasks.syntastic
-        task.resolver {
-            project.files('a')
-        }
-        assert !task.value.contains('\\')
-        assert !task.value.contains(';')
+        when:
+            def task = project.tasks.syntastic
+            task.resolver {
+                project.files('a')
+            }
+
+        then:
+            !task.value.contains('\\')
+            !task.value.contains(';')
     }
 
-    @Test
-    void windowsSeveralPaths() {
-        assumeTrue SystemUtils.IS_OS_WINDOWS
-        project.pluginManager.apply 'com.scuilion.syntastic'
+    @Requires({SystemUtils.IS_OS_WINDOWS})
+    def "check several paths on windows"() {
+        given:
+            project.pluginManager.apply 'com.scuilion.syntastic'
 
-        def task = project.tasks.syntastic
-        task.resolver {
-            project.files('a', 'b', 'c')
-        }
-        assert !task.value.contains('/')
-        assert  task.value.chars.findAll { "$it" == ";" }.size == 2
+        when:
+            def task = project.tasks.syntastic
+            task.resolver {
+                project.files('a', 'b', 'c')
+            }
+
+        then:
+            !task.value.contains('/')
+            task.value.chars.findAll { "$it" == ";" }.size == 2
     }
 
-    @Test
-    void nixSeveralPaths() {
-        assumeFalse SystemUtils.IS_OS_WINDOWS
-        project.pluginManager.apply 'com.scuilion.syntastic'
+    @Requires({!SystemUtils.IS_OS_WINDOWS})
+    def "check several paths on nix"() {
+        given:
+            project.pluginManager.apply 'com.scuilion.syntastic'
 
-        def task = project.tasks.syntastic
-        task.resolver {
-            project.files('a', 'b', 'c')
-        }
-        assert !task.value.contains('\\')
-        assert !task.value.contains(';')
-        assert  task.value.chars.findAll { "$it" == ":" }.size == 2
+        when:
+            def task = project.tasks.syntastic
+            task.resolver {
+                project.files('a', 'b', 'c')
+            }
+
+        then:
+            !task.value.contains('\\')
+            !task.value.contains(';')
+            task.value.chars.findAll { "$it" == ":" }.size == 2
     }
 
-    @Test
-    void windowsDeduplicatePaths() {
-        assumeTrue SystemUtils.IS_OS_WINDOWS
-        project.pluginManager.apply 'com.scuilion.syntastic'
+    @Requires({SystemUtils.IS_OS_WINDOWS})
+    def "check that duplicate paths were removed on windows systems"() {
+        given:
+            project.pluginManager.apply 'com.scuilion.syntastic'
 
-        def task = project.tasks.syntastic
-        task.resolver {
-            project.files('A', 'C', 'D', 'C')
-        }
-        assert !task.value.contains('/')
-        assert  task.value.chars.findAll { "$it" == ";" }.size == 2
+        when:
+            def task = project.tasks.syntastic
+            task.resolver {
+                project.files('A', 'C', 'D', 'C')
+            }
+
+        then:
+            !task.value.contains('/')
+            task.value.chars.findAll { "$it" == ";" }.size == 2
     }
 
-    @Test
-    void nixDeduplicatePaths() {
-        assumeFalse SystemUtils.IS_OS_WINDOWS
-        project.pluginManager.apply 'com.scuilion.syntastic'
+    @Requires({!SystemUtils.IS_OS_WINDOWS})
+    def "check that duplicate paths were removed on nix systems"() {
+        given:
+            project.pluginManager.apply 'com.scuilion.syntastic'
 
-        def task = project.tasks.syntastic
-        task.resolver {
-            project.files('A', 'C', 'D', 'C')
-        }
-        assert !task.value.contains('\\')
-        assert !task.value.contains(';')
-        assert  task.value.chars.findAll { "$it" == ":" }.size == 2
+        when:
+            def task = project.tasks.syntastic
+            task.resolver {
+                project.files('A', 'C', 'D', 'C')
+            }
+
+        then:
+            !task.value.contains('\\')
+            !task.value.contains(';')
+            task.value.chars.findAll { "$it" == ":" }.size == 2
     }
 }

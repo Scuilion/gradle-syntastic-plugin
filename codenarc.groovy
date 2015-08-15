@@ -29,6 +29,7 @@ ruleset {
     }
     ruleset('rulesets/naming.xml') {
         'VariableName' finalRegex: "[a-z][a-zA-Z0-9]*"
+        'MethodName' regex: '[a-z][a-z\\w\\s]*'
     }
     ruleset('rulesets/security.xml') {
         'JavaIoPackageAccess' enabled: false
