@@ -21,7 +21,9 @@ plugins {
 apply plugin: "com.scuilion.syntastic"
 ```
 Note: Plugin cannot be applied in the static 'plugins' block.  
-*This restriction will be removed at a later time.*
+*This restriction might be removed at a later time.*
+
+[Plugin Portal](https://plugins.gradle.org/plugin/com.scuilion.syntastic)
 
 Task
 * syntastic - for working in vim with the [syntastic](https://github.com/scrooloose/syntastic) syntastic checking plugin.
