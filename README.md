@@ -20,10 +20,19 @@ plugins {
 
 apply plugin: "com.scuilion.syntastic"
 ```
-Note: Plugin cannot be applied in the static 'plugins' block.  
+Note: Plugin cannot be applied in the static 'plugins' block.
 *This restriction might be removed at a later time.*
 
 [Plugin Portal](https://plugins.gradle.org/plugin/com.scuilion.syntastic)
 
 Task
 * syntastic - for working in vim with the [syntastic](https://github.com/scrooloose/syntastic) syntastic checking plugin.
+
+##### .vimrc Settings
+
+'''
+let g:syntastic_java_checkers=['javac']
+let g:syntastic_java_javac_config_file_enabled = 1
+'''
+
+syntastic_java_javac_config_file_enabled set syntastic to read the classpath from the .syntastic_javac_config file which is expected in the current working directory.
