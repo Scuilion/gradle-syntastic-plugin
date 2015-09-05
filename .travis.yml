@@ -3,7 +3,7 @@ jdk:
   - oraclejdk8
 before_install:
  - chmod +x gradlew
-script: ./gradlew clean build integrationTest
+script: ./gradlew clean build functionalTest
 notifications:
   email: false
 branches:
