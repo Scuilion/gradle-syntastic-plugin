@@ -27,8 +27,7 @@ class SyntasticPlugin implements Plugin<Project> {
                 cp
             }
         }
-
-        project.tasks.findByPath(':build')?.dependsOn TASK_NAME
+        project.rootProject.tasks.matching { it.name == 'build' }.all { dependsOn TASK_NAME }
     }
 
 }
