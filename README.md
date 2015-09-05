@@ -30,9 +30,9 @@ Task
 
 ##### .vimrc Settings
 
-'''
+```
 let g:syntastic_java_checkers=['javac']
 let g:syntastic_java_javac_config_file_enabled = 1
-'''
+```
 
-syntastic_java_javac_config_file_enabled set syntastic to read the classpath from the .syntastic_javac_config file which is expected in the current working directory.
+`syntastic_java_javac_config_file_enabled` set syntastic to read the classpath from the .syntastic_javac_config file which is expected in the current working directory.
