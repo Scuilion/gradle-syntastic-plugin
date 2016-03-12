@@ -13,7 +13,7 @@ plugins {
 [Plugin Portal](https://plugins.gradle.org/plugin/com.scuilion.syntastic)
 
 Task
-* syntastic - for working in vim with the [syntastic](https://github.com/scrooloose/syntastic) syntastic checking plugin.
+* syntastic - for working in vim with the [syntastic](https://github.com/scrooloose/syntastic) syntastic checking plugin. The task will automatically get called when when building (`gradle build`).
 
 ##### .vimrc Settings
 
