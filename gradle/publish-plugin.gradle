@@ -1,7 +1,7 @@
 pluginBundle {
-    website = 'scuilion.wordpress.com'
+    website = 'https://scuilion.wordpress.com'
     vcsUrl = syntasticVcsUrl
-    tags = artifactTags.tokenize(' ') 
+    tags = artifactTags.tokenize(' ')
     plugins {
         syntasticPlugin {
             vcsUrl = syntasticVcsUrl
