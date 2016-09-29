@@ -6,7 +6,7 @@ A gradle plugin for creating the .syntastic_javac_config file used by syntastic 
 ```
 plugins {
     id "org.gradle.java"
-    id "com.scuilion.syntastic" version "0.3.6"
+    id "com.scuilion.syntastic" version "0.3.8"
 }
 ```
 

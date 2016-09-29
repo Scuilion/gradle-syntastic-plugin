@@ -17,10 +17,6 @@ class SyntasticPlugin implements Plugin<Project> {
 
             resolver { // lazy evaluation
                 def cp = project.files()
-                project.allprojects.each {
-                    println 'x1' + it
-                    println 'x2' + it.class
-                }
                 project.allprojects.each { proj ->
                     proj.plugins.withType(JavaBasePlugin) {
                         proj?.sourceSets.all {
