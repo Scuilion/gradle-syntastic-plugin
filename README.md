@@ -1,4 +1,5 @@
 # gradle-syntastic-plugin ![alt text](https://travis-ci.org/Scuilion/gradle-syntastic-plugin.svg?branch=master)
+[![ghit.me](https://ghit.me/badge.svg?repo=Scuilion/gradle-syntastic-plugin)](https://ghit.me/repo/Scuilion/gradle-syntastic-plugin)
 
 A gradle plugin for creating the .syntastic_javac_config file used by syntastic in VIM.
 
