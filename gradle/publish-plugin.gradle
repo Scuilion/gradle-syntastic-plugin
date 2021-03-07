@@ -1,10 +1,11 @@
+//for publishing to gradle plugin portal
 pluginBundle {
-    website = 'https://scuilion.wordpress.com'
-    vcsUrl = syntasticVcsUrl
+    website = 'scuilion.com'
+    vcsUrl = connectionUrl
     tags = artifactTags.tokenize(' ')
     plugins {
         syntasticPlugin {
-            vcsUrl = syntasticVcsUrl
+            vcsUrl = connectionUrl
             id = group
             displayName = 'Syntastic'
             description = pluginDescription

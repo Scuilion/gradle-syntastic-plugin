@@ -96,7 +96,7 @@ class SubProjectSpec extends Specification {
 
     def "found the root level classpath in syntastic file"() {
         when:
-            def classesFolder = testProjectDir.root.toString() + '/build/classes/main'
+            def classesFolder = testProjectDir.root.toString() + '/build/classes/java/main'
             def resourcesFolder = testProjectDir.root.toString() + '/build/resources/main'
         then:
             hasFile(classesFolder)
@@ -105,7 +105,7 @@ class SubProjectSpec extends Specification {
 
     def "found the subproject level classpath in syntastic file"() {
         when:
-            def classesFolder = testProjectDir.root.toString() + '/subProject/build/classes/main'
+            def classesFolder = testProjectDir.root.toString() + '/subProject/build/classes/java/main'
             def resourcesFolder = testProjectDir.root.toString() + '/subProject/build/resources/main'
         then:
             hasFile(classesFolder)

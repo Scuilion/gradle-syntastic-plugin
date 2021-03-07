@@ -2,6 +2,7 @@ package com.scuilion.gradle.plugins.syntastic
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileCollection
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.SkipWhenEmpty
@@ -24,6 +25,7 @@ class Syntastic extends DefaultTask {
     @OutputFile
     File output = project.file('.syntastic_javac_config')
 
+    @Input
     String getValue() {
         classpath.files.join File.pathSeparator
     }

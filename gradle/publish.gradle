@@ -1,0 +1,53 @@
+publishing {
+    publications {
+        pluginMaven(MavenPublication) {
+            pom {
+                name = project.properties['name']
+                packaging = 'jar'
+                description = project.properties['pluginDescription']
+                url = 'https://www.scuilion.com'
+  
+                repositories {
+                    maven {
+                        name 'release'
+                        url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+                        credentials {
+                            username = "${ossrhUsername}"
+                            password = "${ossrhPassword}"
+                        }
+                    }
+                    maven {
+                        name 'snapshot'
+                        url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+                        credentials {
+                            username = "${ossrhUsername}"
+                            password = "${ossrhPassword}"
+                        }
+                    }
+                }
+                
+                licenses {
+                    license {
+                        name = 'MIT'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'scuilion'
+                        name = 'Kevin O\'Neal'
+                        email = 'oneal.kevin@gmail.com'
+                    }
+                }
+
+                scm {
+                    connection = project.properties['connectionUrl']
+                    developerConnection = project.properties['connectionUrl']
+                    url = project.properties['hostedUrl']
+                }
+            }
+        }
+    }
+}
+signing {
+    sign publishing.publications.pluginMaven
+}

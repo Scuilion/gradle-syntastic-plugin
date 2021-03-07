@@ -1,3 +1,4 @@
+//we're going to use the gradle plugin classpath for our dummy project
 task createClasspathManifest {
     def outputDir = file("$buildDir/$name")
 
@@ -10,50 +11,33 @@ task createClasspathManifest {
     }
 }
 
-configurations {
-    functionalTestCompile.extendsFrom testCompile
-    functionalTestRuntime.extendsFrom testRuntime
-
-    functionalTestCompile.extendsFrom compile
-    functionalTestRuntime.extendsFrom runtime
-}
-
-dependencies {
-    testCompile gradleTestKit()
-
-    testRuntime files(createClasspathManifest)
-}
-
 sourceSets {
     functionalTest {
         groovy {
-            srcDir 'src/functionalTest/groovy'
+            srcDir file('src/functionalTest/groovy')
         }
         resources {
-            srcDir 'src/functionalTest/resources'
+            srcDir file('src/functionalTest/resources')
         }
-        compileClasspath = sourceSets.main.output + configurations.testRuntime
-        runtimeClasspath = output + sourceSets.main.output + configurations.testRuntime
+        compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
+        runtimeClasspath += output + compileClasspath
     }
 }
 
-
-
-
-task functionalTest(type:Test){
-    description = 'Runs the functional tests.'
-    group = 'verification'
-
-    testClassesDir = sourceSets.functionalTest.output.classesDir
-    classpath = sourceSets.functionalTest.runtimeClasspath + sourceSets.main.output
-
-    getReports().getHtml().setDestination(new File("$project.reporting.baseDir", 'functionalTest'))
-    getReports().getJunitXml().setDestination(new File("$project.buildDir", 'functional-results'))
-    dependsOn test
-    mustRunAfter test
+task functionalTest(type: Test) {
+    testClassesDirs = sourceSets.functionalTest.output.classesDirs
+    classpath = sourceSets.functionalTest.runtimeClasspath
 }
 
-functionalTest {
-    testLogging.showStandardStreams = true
+check.dependsOn functionalTest
+
+gradlePlugin {
+    testSourceSets sourceSets.functionalTest
 }
+
+dependencies {
+    testImplementation gradleTestKit()
+    testRuntimeOnly files(createClasspathManifest)
+}
+
 
