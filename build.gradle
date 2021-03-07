@@ -1,5 +1,5 @@
 plugins {
-    id "com.gradle.plugin-publish" version "0.13.0"
+    id 'com.gradle.plugin-publish' version '0.13.0'
     id 'java-gradle-plugin'
     id 'groovy'
     id 'maven-publish'
@@ -28,12 +28,13 @@ dependencies {
 gradlePlugin {
     testSourceSets(sourceSets.functionalTest)
     plugins {
-        simplePlugin {
+        syntasticPlugin {
             id = project.properties['group']
             implementationClass = 'com.scuilion.gradle.plugins.syntastic.SyntasticPlugin'
         }
     }
 }
+
 java {
     withSourcesJar()
 }
